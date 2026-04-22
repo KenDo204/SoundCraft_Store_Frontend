@@ -1,12 +1,14 @@
 import axios from '@/lib/axios';
 
-export enum UserActionType {
-  VIEW_PRODUCT = 'VIEW_PRODUCT',
-  ADD_TO_CART = 'ADD_TO_CART',
-  PURCHASE = 'PURCHASE',
-  ADD_TO_WISHLIST = 'ADD_TO_WISHLIST',
-  SEARCH = 'SEARCH',
-}
+export const UserActionType = {
+  VIEW_PRODUCT: 'VIEW_PRODUCT',
+  ADD_TO_CART: 'ADD_TO_CART',
+  PURCHASE: 'PURCHASE',
+  ADD_TO_WISHLIST: 'ADD_TO_WISHLIST',
+  SEARCH: 'SEARCH',
+} as const;
+
+export type UserActionType = typeof UserActionType[keyof typeof UserActionType];
 
 export interface TrackingItem {
   userId?: number;
@@ -26,11 +28,10 @@ class TrackingService {
   private queue: TrackingItem[] = [];
   private batchSize = 5;
   private flushInterval = 30000; // 30 seconds
-  private intervalId: any = null;
 
   constructor() {
     if (typeof window !== 'undefined') {
-      this.intervalId = setInterval(() => this.flush(), this.flushInterval);
+      setInterval(() => this.flush(), this.flushInterval);
       window.addEventListener('beforeunload', () => this.flush());
     }
   }

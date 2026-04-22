@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchMyOrders, cancelOrder } from '@/store/slices/order.slice';
-import { Package, Truck, CheckCircle, XCircle, ShoppingBag, Eye, X } from 'lucide-react';
+import { Package, Truck, CheckCircle, XCircle, ShoppingBag, X } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { toast } from 'react-toastify';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Chip } from '@mui/material';

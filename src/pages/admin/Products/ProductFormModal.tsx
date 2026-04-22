@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { createProduct, updateProduct } from '@/store/slices/product.slice';
 import { productSchema, type ProductFormValues } from '@/schemas/product.schema';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem, IconButton } from '@mui/material';
-import { Close, DeleteOutline, Add, CloudUpload, Image as ImageIcon } from '@mui/icons-material';
+import { Close, Add, CloudUpload } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import { fetchAllBrands } from '@/store/slices/brand.slice';
 import { fetchCategoryTree } from '@/store/slices/category.slice';

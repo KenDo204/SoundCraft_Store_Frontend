@@ -1,17 +1,5 @@
 import { Menu } from 'lucide-react';
 
-interface NavLink {
-  label: string;
-  href: string;
-  isHighlight?: boolean; // Dùng để highlight màu cam (VD: "CÓ GÌ MỚI")
-}
-
-const mainNavLinks: NavLink[] = [
-  { label: 'DEALS', href: '#' },
-  { label: 'THƯƠNG HIỆU', href: '/brands' },
-  { label: 'SẢN PHẨM', href: '/products' },
-];
-
 const DesktopNav: React.FC<{ onOpenMegaMenu: (section?: string) => void; isCompact?: boolean }> = ({ onOpenMegaMenu, isCompact }) => {
 
   return (

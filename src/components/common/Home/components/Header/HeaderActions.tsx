@@ -1,6 +1,6 @@
 import AvatarNav from './Avatar';
 import { Button } from "@/components/ui/button";
-import { Search, Heart, ShoppingCart, UserCircle, PackageX, X } from 'lucide-react';
+import { Heart, ShoppingCart, UserCircle, PackageX, X } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { NotificationBell } from '@/features/notifications/NotificationBell';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';

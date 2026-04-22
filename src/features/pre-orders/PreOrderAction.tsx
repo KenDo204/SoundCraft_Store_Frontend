@@ -9,7 +9,7 @@ interface PreOrderActionProps {
 
 export const PreOrderAction: React.FC<PreOrderActionProps> = ({ productId }) => {
   const dispatch = useAppDispatch();
-  const { isLoading, success, error } = useAppSelector((state) => state.preOrder);
+  const { isLoading } = useAppSelector((state) => state.preOrder);
   const [hasRegistered, setHasRegistered] = useState(false);
 
   const handlePreOrder = () => {

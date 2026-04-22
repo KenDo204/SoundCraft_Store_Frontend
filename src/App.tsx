@@ -4,14 +4,13 @@ import AppRouter from '@/router/index';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useUser } from '@clerk/clerk-react';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch } from '@/store/hooks';
 // import type { UserInfo } from './types/auth.types';
 import { setAuthUser } from './store/slices/authSlice';
 
 const App: React.FC = () => {
   const { isSignedIn, isLoaded, user: clerkUser } = useUser();
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
   // Dùng ref để đảm bảo hydrateAuth chỉ chạy 1 lần khi khởi tạo (không phụ thuộc vào user)
   const hydrated = useRef(false);
 

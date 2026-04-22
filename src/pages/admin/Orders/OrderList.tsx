@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchAdminOrders, updateOrderStatus } from '@/store/slices/order.slice';
 import { formatPrice } from '@/lib/utils';

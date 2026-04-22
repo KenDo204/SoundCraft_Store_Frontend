@@ -1,5 +1,5 @@
 // Notifications page with user activities
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchNotifications, markAsRead, markAllAsRead } from '@/store/slices/notification.slice';
 import { format } from 'date-fns';
@@ -10,8 +10,7 @@ import {
   Ticket, 
   ShieldCheck, 
   Clock, 
-  CheckCircle2, 
-  Trash2,
+  CheckCircle2,
   Inbox
 } from 'lucide-react';
 import { Button, Pagination, Chip, CircularProgress } from '@mui/material';

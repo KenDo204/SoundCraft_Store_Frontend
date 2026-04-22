@@ -1,5 +1,5 @@
 import api from '@/lib/axios';
-import type { PaginatedData, ProductResponse } from '../types/product.type';
+import type { ProductResponse } from '../types/product.type';
 import type { WishlistStatusResponse } from '../types/wishlist.type';
 
 export interface MyWishlistResponse {

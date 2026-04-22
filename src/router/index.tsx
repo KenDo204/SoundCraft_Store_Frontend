@@ -34,7 +34,6 @@ import { Cart } from '@/pages/client/Cart/Cart';
 import { Checkout } from '@/pages/client/Checkout/Checkout';
 import { PaymentResult } from '@/pages/client/Checkout/PaymentResult';
 import { OrderList } from '@/pages/admin/Orders/OrderList';
-import { Addresses } from '@/pages/client/Address/Addresses';
 import { BlogList } from '@/pages/client/Blog/BlogList';
 import { BlogDetail } from '@/pages/client/Blog/BlogDetail';
 import { AdminBlogList } from '@/pages/admin/Blog/AdminBlogList';
