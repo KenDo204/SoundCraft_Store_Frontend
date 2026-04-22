@@ -11,10 +11,13 @@ export const NotificationBell: React.FC = () => {
   const navigate = useNavigate();
   const { unreadCount, list, isLoading } = useAppSelector((state) => state.notifications);
   const [isOpen, setIsOpen] = useState(false);
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
-    dispatch(fetchUnreadCount());
-  }, [dispatch]);
+    if (isAuthenticated){
+      dispatch(fetchUnreadCount());
+    }
+  }, [dispatch, isAuthenticated]);
 
   const handleOpenDropdown = (open: boolean) => {
     setIsOpen(open);

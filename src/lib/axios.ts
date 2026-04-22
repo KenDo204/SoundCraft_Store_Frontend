@@ -42,57 +42,55 @@ api.interceptors.request.use(
 // 2. RESPONSE INTERCEPTOR: Bắt lỗi 401 và xử lý Silent Refresh
 api.interceptors.response.use(
   (response) => {
-    // Nếu API gọi thành công, trả về data luôn
     return response.data;
   },
   async (error: AxiosError) => {
     const originalRequest = error.config as CustomAxiosRequestConfig;
 
-    // Nếu lỗi là 401 (Unauthorized) và request này chưa từng được retry
+    // 1. Nếu lỗi 401 xảy ra khi đang gọi chính API refresh-token hoặc login
+    // thì TUYỆT ĐỐI không được retry hay redirect nữa.
+    if (
+      error.response?.status === 401 && 
+      (originalRequest.url?.includes('/auth/refresh-token') || originalRequest.url?.includes('/auth/login'))
+    ) {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('user');
+      // Trả về lỗi để UI xử lý, KHÔNG dùng window.location ở đây
+      return Promise.reject(error);
+    }
+
+    // 2. Xử lý Silent Refresh cho các API khác bị 401
     if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
-      originalRequest._retry = true; // Đánh dấu là đang retry để tránh lặp vô hạn
+      originalRequest._retry = true;
 
       try {
-        // Dùng axios mặc định (không dùng apiClient) để gọi API refresh
-        // nhằm tránh việc bị chính response interceptor này can thiệp lại
         const refreshResponse = await axios.get(`${API_URL}/auth/refresh-token`, {
-          withCredentials: true, // Vẫn phải mang theo HttpOnly Cookie chứa refresh_token
+          withCredentials: true,
         });
 
-        console.log("Refresh Token Response:", refreshResponse.data);
-        // Lấy token mới từ cục data trả về (cục Body có gói bên trong biến 'data')
         const newAccessToken = refreshResponse.data.data.access_token;
+        if (!newAccessToken) throw new Error("No token found");
 
-        if (!newAccessToken) {
-          throw new Error("Không tìm thấy access_token trong response của API refresh");
-        }
-
-        // Cập nhật token mới vào localStorage
         localStorage.setItem('access_token', newAccessToken);
 
-        // Gắn token mới vào Header của request ban đầu bị lỗi
         if (originalRequest.headers) {
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         }
 
-        // Gửi lại request ban đầu với token mới
         return api(originalRequest);
         
       } catch (refreshError) {
-        console.error("Lỗi Refresh Token:", refreshError);
-        // Rơi vào đây tức là Refresh Token cũng đã hết hạn hoặc không hợp lệ.
-        // FIX: Xóa TOÀN BỘ auth data (cả user lẫn token) để GuestRoute
-        // không đọc lại user cũ từ localStorage và tạo vòng lặp redirect vô hạn.
+        // Nếu refresh thất bại, chỉ xóa dữ liệu, để ProtectedRoute/GuestRoute tự đá đi
         localStorage.removeItem('access_token');
         localStorage.removeItem('user');
         
-        window.location.replace('/login'); // replace thay vì href để không tạo history entry
-        
+        // CỰC KỲ QUAN TRỌNG: 
+        // Thay vì window.location.replace('/login'), hãy trả về lỗi.
+        // Nếu bạn đang ở trang Login, web sẽ đứng yên không reload nữa.
         return Promise.reject(refreshError);
       }
     }
 
-    // Các lỗi khác (400, 403, 404, 500...) thì ném ra cho Component tự xử lý
     return Promise.reject(error);
   }
 );
