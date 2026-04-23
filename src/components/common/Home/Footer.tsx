@@ -42,7 +42,7 @@ const infoLinks: NavItem[] = [
   { label: 'Rewards', href: '#' },
   { label: 'Click & Collect', href: '#' },
   { label: 'Ưu đãi khuyến học', href: '#' },
-  { label: 'Blog', href: '#' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Hướng dẫn mua hàng', href: '#' },
 ];
 

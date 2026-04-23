@@ -31,7 +31,7 @@ interface AdminDrawerProps {
 }
 
 const MENU_ITEMS = [
-  { text: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/admin' },
+  { text: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/admin/dashboard' },
   { text: 'Quản lý Banner', icon: <ImageIcon size={20} />, path: '/admin/banners' },
   { text: 'Thương hiệu', icon: <Tags size={20} />, path: '/admin/brands' },
   { text: 'Danh mục', icon: <ListTree size={20} />, path: '/admin/categories' },

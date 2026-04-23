@@ -16,6 +16,7 @@ import preOrderReducer from './slices/pre-order.slice';
 import notificationReducer from './slices/notification.slice';
 import recommendationReducer from './slices/recommendation.slice';
 import orderReducer from './slices/order.slice';
+import revenueReducer from './slices/revenue.slice';
 
 export const store = configureStore({
   reducer: {
@@ -36,6 +37,7 @@ export const store = configureStore({
     notifications: notificationReducer,
     recommendations: recommendationReducer,
     orders: orderReducer,
+    revenue: revenueReducer,
   },
 });
 

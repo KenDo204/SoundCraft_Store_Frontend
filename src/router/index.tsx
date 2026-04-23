@@ -39,9 +39,7 @@ import { BlogDetail } from '@/pages/client/Blog/BlogDetail';
 import { AdminBlogList } from '@/pages/admin/Blog/AdminBlogList';
 import { AdminBlogAddEdit } from '@/pages/admin/Blog/AdminBlogAddEdit';
 import { NotificationsPage } from '@/pages/client/Notifications/Notifications';
-
-// Mock Page
-const AdminDashboard = () => <div className="text-2xl font-bold">Tổng quan hệ thống</div>;
+import AdminDashboard from '@/pages/admin/Dashboard/AdminDashboard';
 
 
 const AppRouter: React.FC = () => {
