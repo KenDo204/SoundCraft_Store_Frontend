@@ -17,6 +17,8 @@ import notificationReducer from './slices/notification.slice';
 import recommendationReducer from './slices/recommendation.slice';
 import orderReducer from './slices/order.slice';
 import revenueReducer from './slices/revenue.slice';
+import reviewReducer from './slices/review.slice';
+import customerReducer from './slices/customer.slice';
 
 export const store = configureStore({
   reducer: {
@@ -38,6 +40,8 @@ export const store = configureStore({
     recommendations: recommendationReducer,
     orders: orderReducer,
     revenue: revenueReducer,
+    reviews: reviewReducer,
+    customers: customerReducer,
   },
 });
 

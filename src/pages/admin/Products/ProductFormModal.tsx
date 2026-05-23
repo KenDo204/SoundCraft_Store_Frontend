@@ -255,9 +255,9 @@ const ProductFormModal: React.FC<Props> = ({ open, setOpen, productData, refresh
                   <label className="block text-sm font-medium text-stone-700 mb-1 ml-1">Danh mục sản phẩm <span className="text-red-500">*</span></label>
                   <div
                     onClick={() => setIsPickerOpen(true)}
-                    className={`w-full flex items-center justify-between p-4 border rounded-xl cursor-pointer hover:border-[#00927c] transition-colors bg-white ${errors.categoryId ? 'border-red-500' : 'border-stone-300'}`}
+                    className={`w-full flex items-center justify-between p-4 border rounded-xl cursor-pointer hover:border-[#7a6b2b] transition-colors bg-white ${errors.categoryId ? 'border-red-500' : 'border-stone-300'}`}
                   >
-                    <span className={!watch("categoryId") || watch("categoryId") === 0 ? 'text-stone-500 font-medium' : 'text-[#00927c] font-bold'}>
+                    <span className={!watch("categoryId") || watch("categoryId") === 0 ? 'text-stone-500 font-medium' : 'text-[#7a6b2b] font-bold'}>
                       {categoryPathText}
                     </span>
                     <KeyboardArrowRight className="text-stone-400" />

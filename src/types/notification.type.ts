@@ -2,8 +2,8 @@ export interface NotificationResponse {
   id: number;
   userId: number;
   title: string;
-  message: string;
+  content: string;
   type: 'INFO' | 'ORDER' | 'PROMOTION' | 'SYSTEM' | 'PRE_ORDER';
-  isRead: boolean;
-  createdAt: string;
+  is_read: boolean;
+  created_at: string;
 }

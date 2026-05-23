@@ -33,7 +33,7 @@ import { formatPrice } from '@/lib/utils';
 
 const AdminDashboard: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { stats, monthlyRevenue, isLoading } = useAppSelector((state) => state.revenue);
+  const { stats, monthlyRevenue, isStatsLoading, error } = useAppSelector((state) => state.revenue);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   useEffect(() => {
@@ -44,10 +44,34 @@ const AdminDashboard: React.FC = () => {
     dispatch(fetchMonthlyRevenue(selectedYear));
   }, [dispatch, selectedYear]);
 
-  if (isLoading && !stats) {
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
+        <div className="text-red-500 bg-red-50 p-4 rounded-lg border border-red-100 flex items-center gap-2">
+          <XCircle className="w-5 h-5" />
+          <span className="font-medium">{error}</span>
+        </div>
+        <button 
+          onClick={() => {
+            dispatch(fetchDashboardStats());
+            dispatch(fetchMonthlyRevenue(selectedYear));
+          }}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Thử lại
+        </button>
+      </div>
+    );
+  }
+
+  // Hiển thị loading nếu stats là null và đang tải
+  if (!stats && isStatsLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          <p className="text-gray-500 font-medium">Đang tải dữ liệu thống kê...</p>
+        </div>
       </div>
     );
   }

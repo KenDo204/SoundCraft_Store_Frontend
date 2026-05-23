@@ -24,7 +24,7 @@ const typeConfig: Record<string, { icon: any, color: string, bg: string, label: 
   INFO: { icon: Bell, color: 'text-stone-600', bg: 'bg-stone-50', label: 'Thông tin' },
 };
 
-export const NotificationsPage = () => {
+export const NotificationsAdminPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { list, pagination, isLoading, unreadCount } = useAppSelector((state) => state.notifications);
@@ -159,7 +159,7 @@ export const NotificationsPage = () => {
               <h3 className="text-xl font-bold text-stone-700 mb-2">Hộp thư trống</h3>
               <p className="text-stone-400 max-w-xs">Bạn chưa có bất kỳ thông báo nào. Các cập nhật quan trọng sẽ hiển thị ở đây.</p>
               <Button
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/admin')}
                 variant="contained"
                 sx={{ mt: 4, bgcolor: '#1c1917', borderRadius: '12px', fontWeight: 'bold', px: 4 }}
               >

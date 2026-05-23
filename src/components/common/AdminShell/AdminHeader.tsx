@@ -1,9 +1,9 @@
 import React from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Box, Badge } from '@mui/material';
-import { Menu, Bell } from 'lucide-react';
+import { AppBar, Toolbar, IconButton, Typography, Box, } from '@mui/material';
+import { Menu } from 'lucide-react';
 // import { UserButton } from '@clerk/clerk-react';
 import { AdminAvatar } from './AdminAvatar';
-
+import { NotificationBell } from '@/features/notifications/NotificationBell';
 const drawerWidth = 260;
 
 interface AdminHeaderProps {
@@ -42,12 +42,13 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({ onDrawerToggle }) => {
 
         {/* Cụm công cụ bên phải */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="error">
               <Bell size={20} />
             </Badge>
-          </IconButton>
-          
+          </IconButton> */}
+          <NotificationBell />
+
           {/* Component có sẵn của Clerk để quản lý tài khoản */}
           <AdminAvatar />
         </Box>

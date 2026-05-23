@@ -5,14 +5,16 @@ import type { DashboardStatsResponse, MonthlyRevenueResponse } from '@/types/rev
 interface RevenueState {
   stats: DashboardStatsResponse | null;
   monthlyRevenue: MonthlyRevenueResponse[];
-  isLoading: boolean;
+  isStatsLoading: boolean;
+  isMonthlyLoading: boolean;
   error: string | null;
 }
 
 const initialState: RevenueState = {
   stats: null,
   monthlyRevenue: [],
-  isLoading: false,
+  isStatsLoading: false,
+  isMonthlyLoading: false,
   error: null,
 };
 
@@ -20,9 +22,9 @@ export const fetchDashboardStats = createAsyncThunk<DashboardStatsResponse>(
   'revenue/fetchStats',
   async (_, { rejectWithValue }) => {
     try {
-      const response: any = await revenueService.getDashboardStats();
-      // Nếu response có data (dạng ApiResponse), trả về data. Nếu không, trả về chính response (dạng DTO trực tiếp)
-      return response.data !== undefined ? response.data : response;
+      const response = await revenueService.getDashboardStats();
+      // Backend trả về { status, message, data }
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Lỗi khi lấy thống kê dashboard');
     }
@@ -33,8 +35,9 @@ export const fetchMonthlyRevenue = createAsyncThunk<MonthlyRevenueResponse[], nu
   'revenue/fetchMonthly',
   async (year, { rejectWithValue }) => {
     try {
-      const response: any = await revenueService.getMonthlyRevenue(year);
-      return response.data !== undefined ? response.data : response;
+      const response = await revenueService.getMonthlyRevenue(year);
+      // Backend trả về { status, message, data }
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Lỗi khi lấy doanh thu theo tháng');
     }
@@ -53,28 +56,28 @@ const revenueSlice = createSlice({
     builder
       // Dashboard Stats
       .addCase(fetchDashboardStats.pending, (state) => {
-        state.isLoading = true;
+        state.isStatsLoading = true;
         state.error = null;
       })
       .addCase(fetchDashboardStats.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.isStatsLoading = false;
         state.stats = action.payload;
       })
       .addCase(fetchDashboardStats.rejected, (state, action: any) => {
-        state.isLoading = false;
+        state.isStatsLoading = false;
         state.error = action.payload;
       })
       // Monthly Revenue
       .addCase(fetchMonthlyRevenue.pending, (state) => {
-        state.isLoading = true;
+        state.isMonthlyLoading = true;
         state.error = null;
       })
       .addCase(fetchMonthlyRevenue.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.isMonthlyLoading = false;
         state.monthlyRevenue = action.payload;
       })
       .addCase(fetchMonthlyRevenue.rejected, (state, action: any) => {
-        state.isLoading = false;
+        state.isMonthlyLoading = false;
         state.error = action.payload;
       });
   },

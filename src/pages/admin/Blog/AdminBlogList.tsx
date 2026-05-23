@@ -70,11 +70,11 @@ export const AdminBlogList = () => {
   const renderStatusBadge = (status: string) => {
     switch (status) {
       case 'PUBLISHED':
-        return <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">Đã xuất bản</span>;
+        return <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">Hiển thị</span>;
       case 'HIDDEN':
         return <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">Đang ẩn</span>;
       default:
-        return <span className="bg-stone-200 text-stone-600 px-3 py-1 rounded-full text-xs font-bold">Bản nháp (Draft)</span>;
+        return <span className="bg-stone-200 text-stone-600 px-3 py-1 rounded-full text-xs font-bold">Bản nháp</span>;
     }
   };
 

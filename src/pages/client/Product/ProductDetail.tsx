@@ -3,7 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchProductById, fetchProducts } from '@/store/slices/product.slice'; // fetchProducts dùng để gọi SP tương tự
 import { ProductCard } from './components/ProductCard';
+import { ProductReviews } from './components/ProductReviews';
 import { ShoppingCart, Star, ShieldCheck, Truck, Heart, Loader2 } from 'lucide-react';
+import { fetchReviewStatistics } from '@/store/slices/review.slice';
 import { toggleWishlist } from '@/store/slices/wishlist.slice';
 import { upsertCartItem } from '@/store/slices/cart.slice';
 import { wishlistService } from '@/services/wishlist.service';
@@ -17,6 +19,7 @@ export const ProductDetail = () => {
   const navigate = useNavigate();
   const { currentProduct: product, isLoading } = useAppSelector(state => state.products);
   const { list: allProducts } = useAppSelector(state => state.products);
+  const { statistics } = useAppSelector(state => state.reviews);
   const { user } = useAppSelector(state => state.auth);
 
   const [mainImage, setMainImage] = useState<string>('');
@@ -29,6 +32,7 @@ export const ProductDetail = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchProductById(id));
+      dispatch(fetchReviewStatistics(Number(id)));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [id, dispatch]);
@@ -191,8 +195,14 @@ export const ProductDetail = () => {
             <h1 className="text-3xl lg:text-4xl font-black text-stone-900 leading-tight mb-4">{product.productName}</h1>
 
             <div className="flex items-center gap-4 mb-6 pb-6 border-b border-stone-100">
-              <div className="flex text-orange-400"><Star size={18} fill="currentColor" /><Star size={18} fill="currentColor" /><Star size={18} fill="currentColor" /><Star size={18} fill="currentColor" /><Star size={18} fill="currentColor" /></div>
-              <span className="text-stone-500 text-sm">| Đã bán: 120+</span>
+              <div className="flex items-center gap-1 text-orange-600 font-black">
+                <Star size={18} fill="currentColor" />
+                <span>{statistics?.averageRating?.toFixed(1) || '0.0'}</span>
+              </div>
+              <span className="text-stone-300">|</span>
+              <span className="text-stone-500 text-sm font-medium">{statistics?.totalReviews || 0} Đánh giá</span>
+              <span className="text-stone-300">|</span>
+              <span className="text-stone-500 text-sm font-medium">Đã bán: 120+</span>
             </div>
 
             <div className="mb-8 flex items-end gap-4">
@@ -260,6 +270,11 @@ export const ProductDetail = () => {
         <div className="bg-white rounded-[32px] p-8 lg:p-12 shadow-sm border border-stone-100 mb-16">
           <h2 className="text-2xl font-black text-stone-900 mb-6">Mô tả sản phẩm</h2>
           <div className="prose max-w-none text-stone-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: product.productDescription || 'Chưa có mô tả chi tiết.' }} />
+        </div>
+
+        {/* ======================= ĐÁNH GIÁ SẢN PHẨM ======================= */}
+        <div className="mb-16">
+          <ProductReviews productId={product.productId} />
         </div>
 
         {/* ======================= SẢN PHẨM TƯƠNG TỰ ======================= */}

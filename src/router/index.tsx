@@ -40,6 +40,10 @@ import { AdminBlogList } from '@/pages/admin/Blog/AdminBlogList';
 import { AdminBlogAddEdit } from '@/pages/admin/Blog/AdminBlogAddEdit';
 import { NotificationsPage } from '@/pages/client/Notifications/Notifications';
 import AdminDashboard from '@/pages/admin/Dashboard/AdminDashboard';
+import ReviewManagement from '@/pages/admin/Reviews/ReviewManagement';
+import CustomerList from '@/pages/admin/Customers/CustomerList';
+import CustomerAddEdit from '@/pages/admin/Customers/CustomerAddEdit';
+import { NotificationsAdminPage } from '@/pages/admin/Notifications/Notifications';
 
 
 const AppRouter: React.FC = () => {
@@ -74,16 +78,16 @@ const AppRouter: React.FC = () => {
             <Route path={PATHS.NOTIFICATION} element={<NotificationsPage />} />
           </Route>
 
-          
-        {/* ================= 404 NOT FOUND ================= */}
-        <Route path="*" element={<NotFound />} />
+
+          {/* ================= 404 NOT FOUND ================= */}
+          <Route path="*" element={<NotFound />} />
 
         </Route>
 
         {/* ================= KHU VỰC DÀNH CHO ADMIN / OWNER ================= */}
         {/* Bọc bằng AdminRoute để kiểm tra quyền trước */}
         <Route path={PATHS.ADMIN} element={<AdminRoute />}>
-          
+
           {/* Nếu pass quyền, render cái AdminLayout (Sidebar + Header) */}
           <Route element={<AdminLayout />}>
             {/* Các trang con sẽ được render vào thẻ <Outlet /> bên trong AdminLayout */}
@@ -103,15 +107,23 @@ const AppRouter: React.FC = () => {
 
             <Route path={PATHS.ADMIN_ORDERS} element={<OrderList />} />
             <Route path={PATHS.ADMIN_PRODUCTS} element={<ProductList />} />
-            
+
             <Route path={PATHS.ADMIN_COUPONS} element={<CouponList />} />
             <Route path={PATHS.ADMIN_COUPONS_ADD} element={<AddCoupon />} />
 
             <Route path={PATHS.ADMIN_BLOG} element={<AdminBlogList />} />
             <Route path={PATHS.ADMIN_BLOG_ADD} element={<AdminBlogAddEdit />} />
             <Route path={PATHS.ADMIN_BLOG_EDIT} element={<AdminBlogAddEdit />} />
+            <Route path={PATHS.ADMIN_REVIEWS} element={<ReviewManagement />} />
             {/* <Route path={PATHS.ADMIN_PRODUCTS_ADD} element={<ProductFormModal />} />
             <Route path={PATHS.ADMIN_PRODUCTS_EDIT} element={<ProductFormModal />} /> */}
+
+            <Route path={PATHS.ADMIN_CUSTOMERS} element={<CustomerList />} />
+            <Route path={PATHS.ADMIN_CUSTOMERS_ADD} element={<CustomerAddEdit />} />
+            <Route path={PATHS.ADMIN_CUSTOMERS_EDIT} element={<CustomerAddEdit />} />
+
+            <Route path={PATHS.ADMIN_NOTIFICATIONS} element={<NotificationsAdminPage />} />
+
 
             <Route path="*" element={<NotFound />} />
           </Route>

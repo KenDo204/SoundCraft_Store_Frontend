@@ -26,8 +26,10 @@ export const OrderList = () => {
   const getStatusColor = (status: string) => {
     switch(status) {
       case 'PENDING': return 'text-orange-600 bg-orange-100';
+      case 'CONFIRMED': return 'text-purple-600 bg-purple-100';
       case 'SHIPPING': return 'text-blue-600 bg-blue-100';
       case 'DELIVERED': return 'text-green-600 bg-green-100';
+      case 'COMPLETED': return 'text-emerald-600 bg-emerald-100';
       case 'CANCELLED': return 'text-red-600 bg-red-100';
       default: return 'text-stone-600 bg-stone-100';
     }
@@ -92,8 +94,10 @@ export const OrderList = () => {
                         className={getStatusColor(order.status)}
                       >
                         <MenuItem value="PENDING" sx={{ fontSize: '0.875rem' }}>Chờ xử lý</MenuItem>
+                        <MenuItem value="CONFIRMED" sx={{ fontSize: '0.875rem' }}>Đã xác nhận</MenuItem>
                         <MenuItem value="SHIPPING" sx={{ fontSize: '0.875rem' }}>Đang giao hàng</MenuItem>
                         <MenuItem value="DELIVERED" sx={{ fontSize: '0.875rem' }}>Đã giao</MenuItem>
+                        <MenuItem value="COMPLETED" sx={{ fontSize: '0.875rem' }}>Đã hoàn thành</MenuItem>
                         <MenuItem value="CANCELLED" sx={{ fontSize: '0.875rem', color: 'red' }}>Đã hủy</MenuItem>
                       </Select>
                     </td>

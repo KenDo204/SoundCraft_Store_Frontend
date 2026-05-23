@@ -11,7 +11,15 @@ export const NotificationBell: React.FC = () => {
   const navigate = useNavigate();
   const { unreadCount, list, isLoading } = useAppSelector((state) => state.notifications);
   const [isOpen, setIsOpen] = useState(false);
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+
+  const navigateBasedOnRole = () => {
+    const role = user?.role;
+    // Determine target URL based on role. Admin-like roles get admin page.
+    const adminRoles = ['SUPER_ADMIN', 'ADMIN', 'OWNER', 'ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_OWNER'];
+    const target = adminRoles.includes(role ?? '') ? '/admin/notification' : '/notification';
+    navigate(target);
+  };
 
   useEffect(() => {
     if (isAuthenticated){
@@ -49,7 +57,7 @@ export const NotificationBell: React.FC = () => {
         <Button 
           variant="ghost" 
           className="relative p-2 rounded-full"
-          onClick={() => navigate('/notification')}
+          onClick={navigateBasedOnRole}
         >
           <Bell size={20} className="text-gray-700" />
           {unreadCount > 0 && (
@@ -76,14 +84,14 @@ export const NotificationBell: React.FC = () => {
             list.map((item) => (
               <DropdownMenuItem 
                 key={item.id} 
-                className={`p-3 cursor-pointer flex flex-col items-start focus:bg-gray-100 ${!item.isRead ? getBackgroundColor(item.type) : 'bg-white opacity-70'}`}
+                className={`p-3 cursor-pointer flex flex-col items-start focus:bg-gray-100 ${!item.is_read ? getBackgroundColor(item.type) : 'bg-white opacity-70'}`}
                 onClick={() => handleMarkAsRead(item.id)}
               >
                 <div className="flex justify-between w-full mb-1">
-                  <span className={`text-sm ${!item.isRead ? 'font-bold text-black' : 'font-normal text-gray-700'}`}>{item.title}</span>
-                  <span className="text-xs text-gray-400">{new Date(item.createdAt).toLocaleDateString()}</span>
+                  <span className={`text-sm ${!item.is_read ? 'font-bold text-black' : 'font-normal text-gray-700'}`}>{item.title}</span>
+                  <span className="text-xs text-gray-400">{new Date(item.created_at).toLocaleDateString()}</span>
                 </div>
-                <p className={`text-xs ${!item.isRead ? 'text-gray-800' : 'text-gray-500'} line-clamp-2`}>{item.message}</p>
+                <p className={`text-xs ${!item.is_read ? 'text-gray-800' : 'text-gray-500'} line-clamp-2`}>{item.content}</p>
               </DropdownMenuItem>
             ))
           )}
@@ -95,7 +103,7 @@ export const NotificationBell: React.FC = () => {
             className="text-orange-600 font-bold text-sm w-full"
             onClick={() => {
               setIsOpen(false);
-              window.location.href = '/notification';
+              navigateBasedOnRole();
             }}
            >
               Xem tất cả thông báo

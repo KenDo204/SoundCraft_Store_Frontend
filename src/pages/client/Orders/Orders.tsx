@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { fetchMyOrders, cancelOrder } from '@/store/slices/order.slice';
+import { fetchMyOrders, cancelOrder, confirmReceipt } from '@/store/slices/order.slice';
 import { Package, Truck, CheckCircle, XCircle, ShoppingBag, X } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { toast } from 'react-toastify';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Chip } from '@mui/material';
+import { ReviewModal } from '@/components/common/ReviewModal';
 
 export const Orders = () => {
   const dispatch = useAppDispatch();
@@ -13,6 +14,10 @@ export const Orders = () => {
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
   const [cancelReason, setCancelReason] = useState('');
+
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [selectedProductForReview, setSelectedProductForReview] = useState<{ id: number; name: string; image: string } | null>(null);
+  const [reviewOrderId, setReviewOrderId] = useState<number | null>(null);
 
   useEffect(() => {
     dispatch(fetchMyOrders());
@@ -34,17 +39,38 @@ export const Orders = () => {
     try {
       await dispatch(cancelOrder({ orderId: selectedOrderId, reason: cancelReason })).unwrap();
       toast.success('Đã hủy đơn hàng');
+      await dispatch(fetchMyOrders());
       setCancelModalOpen(false);
     } catch (error: any) {
       toast.error(error);
     }
   };
 
+  const handleOpenReview = (productId: number, productName: string, productImg: string, orderId: number) => {
+    setSelectedProductForReview({ id: productId, name: productName, image: productImg });
+    setReviewOrderId(orderId);
+    setReviewModalOpen(true);
+  };
+
+  const handleConfirmReceipt = async (orderId: number) => {
+    if (window.confirm('Bạn xác nhận đã nhận được hàng và muốn hoàn thành đơn hàng này?')) {
+      try {
+        await dispatch(confirmReceipt(orderId)).unwrap();
+        toast.success('Xác nhận nhận hàng thành công');
+        await dispatch(fetchMyOrders());
+      } catch (error: any) {
+        toast.error(error);
+      }
+    }
+  };
+
   const getStatusChip = (status: string) => {
     switch(status) {
       case 'PENDING': return <Chip label="Đang chờ xử lý" color="warning" size="small" icon={<Package size={14} />} />;
+      case 'CONFIRMED': return <Chip label="Đã xác nhận" color="secondary" size="small" icon={<Package size={14} />} />;
       case 'SHIPPING': return <Chip label="Đang giao hàng" color="info" size="small" icon={<Truck size={14} />} />;
-      case 'DELIVERED': return <Chip label="Đã giao thành công" color="success" size="small" icon={<CheckCircle size={14} />} />;
+      case 'DELIVERED': return <Chip label="Đã giao" color="success" size="small" icon={<CheckCircle size={14} />} />;
+      case 'COMPLETED': return <Chip label="Đã hoàn thành" color="success" size="small" icon={<CheckCircle size={14} />} />;
       case 'CANCELLED': return <Chip label="Đã hủy" color="error" size="small" icon={<XCircle size={14} />} />;
       default: return <Chip label={status} size="small" />;
     }
@@ -86,6 +112,22 @@ export const Orders = () => {
                       <p className="font-bold text-stone-800 line-clamp-2">{item.productName}</p>
                       <p className="text-sm text-stone-500 font-medium mt-1">Số lượng: {item.quantity}</p>
                       <p className="text-sm font-bold text-orange-600 mt-1">{formatPrice(item.price * item.quantity)}</p>
+                      {order.status === 'COMPLETED' && (
+                        item.isReviewed ? (
+                          <div className="mt-2 flex items-center gap-1 text-green-600 font-bold text-xs uppercase tracking-tight">
+                            <CheckCircle size={14} /> Đã đánh giá
+                          </div>
+                        ) : (
+                          <Button 
+                            size="small" 
+                            variant="text" 
+                            onClick={() => handleOpenReview(item.productId, item.productName, item.imageUrl || '', order.id)}
+                            sx={{ color: '#ea580c', fontWeight: 'bold', fontSize: '12px', mt: 1, p: 0, textTransform: 'none', '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' } }}
+                          >
+                            Viết đánh giá
+                          </Button>
+                        )
+                      )}
                     </div>
                   </div>
                 ))}
@@ -110,6 +152,18 @@ export const Orders = () => {
                       sx={{ bgcolor: 'error.main', mt: 2, borderRadius: '8px', textTransform: 'none', fontWeight: 'bold', '&:hover': { bgcolor: 'error.dark' } }}
                     >
                       Hủy đơn hàng
+                    </Button>
+                  )}
+
+                  {order.status === 'DELIVERED' && (
+                    <Button 
+                      onClick={() => handleConfirmReceipt(order.id)}
+                      variant="contained" 
+                      color="success"
+                      size="small"
+                      sx={{ bgcolor: 'success.main', mt: 2, borderRadius: '8px', textTransform: 'none', fontWeight: 'bold', '&:hover': { bgcolor: 'success.dark' } }}
+                    >
+                      Đã nhận được hàng
                     </Button>
                   )}
                 </div>
@@ -141,6 +195,16 @@ export const Orders = () => {
           <Button onClick={submitCancel} variant="contained" sx={{ fontWeight: 'bold', borderRadius: '8px', bgcolor: '#9f8a46', '&:hover': { bgcolor: '#775d14ff' } }}>Xác nhận Hủy</Button>
         </DialogActions>
       </Dialog>
+
+      {selectedProductForReview && (
+        <ReviewModal 
+          open={reviewModalOpen} 
+          onClose={() => setReviewModalOpen(false)} 
+          product={selectedProductForReview}
+          orderId={reviewOrderId || undefined}
+          onSuccess={() => dispatch(fetchMyOrders())}
+        />
+      )}
     </div>
   );
 };

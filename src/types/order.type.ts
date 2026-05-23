@@ -11,13 +11,14 @@ export interface OrderDetailResponse {
   quantity: number;
   price: number;
   imageUrl?: string;
+  isReviewed?: boolean;
 }
 
 export interface OrderResponse {
     id: number;
     note: string;
     orderDate: string; // ISO DateTime
-    status: 'PENDING' | 'SHIPPING' | 'DELIVERED' | 'CANCELLED';
+    status: 'PENDING' | 'SHIPPING' | 'DELIVERED' | 'CANCELLED' | 'COMPLETED' | 'CONFIRMED';
     totalMoney: number;
     shippingMethod: string;
     trackingNumber: string;

@@ -31,5 +31,10 @@ export const orderService = {
   // 6. Admin cập nhật lại giỏ hàng trong trường hợp khách gọi điện thoại
   updateOrderItems: async (orderId: number, items: { productId: number; quantity: number }[]): Promise<ApiResponse<OrderResponse>> => {
     return api.post(`/orders/admin/${orderId}/items`, { items });
+  },
+
+  // 7. Khách hàng xác nhận nhận hàng
+  confirmReceipt: async (orderId: number): Promise<ApiResponse<OrderResponse>> => {
+    return api.post(`/orders/${orderId}/confirm-receipt`);
   }
 };

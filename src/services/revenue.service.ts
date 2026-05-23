@@ -10,4 +10,12 @@ export const revenueService = {
   getMonthlyRevenue: async (year: number): Promise<ApiResponse<MonthlyRevenueResponse[]>> => {
     return api.get(`/revenues/monthly-revenue/${year}`);
   },
+
+  findAll: async (): Promise<ApiResponse<any>> => {
+    return api.get('/revenues');
+  },
+
+  findOne: async (id: number | string): Promise<ApiResponse<any>> => {
+    return api.get(`/revenues/${id}`);
+  },
 };

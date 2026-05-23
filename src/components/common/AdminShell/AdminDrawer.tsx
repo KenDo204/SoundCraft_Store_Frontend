@@ -20,7 +20,8 @@ import {
   ShoppingBag, 
   Users, 
   Ticket,
-  BookOpen
+  BookOpen,
+  MessageSquare
 } from 'lucide-react';
 
 const drawerWidth = 260;
@@ -31,7 +32,7 @@ interface AdminDrawerProps {
 }
 
 const MENU_ITEMS = [
-  { text: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/admin/dashboard' },
+  { text: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/admin' },
   { text: 'Quản lý Banner', icon: <ImageIcon size={20} />, path: '/admin/banners' },
   { text: 'Thương hiệu', icon: <Tags size={20} />, path: '/admin/brands' },
   { text: 'Danh mục', icon: <ListTree size={20} />, path: '/admin/categories' },
@@ -40,6 +41,7 @@ const MENU_ITEMS = [
   { text: 'Bài viết', icon: <BookOpen size={20} />, path: '/admin/blogs' },
   { text: 'Mã giảm giá', icon: <Ticket size={20} />, path: '/admin/coupons' },
   { text: 'Khách hàng', icon: <Users size={20} />, path: '/admin/customers' },
+  { text: 'Đánh giá', icon: <MessageSquare size={20} />, path: '/admin/reviews' },
 ];
 
 export const AdminDrawer: React.FC<AdminDrawerProps> = ({ mobileOpen, onClose }) => {

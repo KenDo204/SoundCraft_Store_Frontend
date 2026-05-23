@@ -122,7 +122,7 @@ const EditCategory = () => {
             <Box className="opacity-70">
               <label className="block text-sm font-medium text-gray-700 mb-1 ml-1">Danh mục cha (Không thể thay đổi)</label>
               <div className="w-full flex items-center justify-between p-4 border border-gray-300 rounded-xl cursor-not-allowed bg-gray-50">
-                <span className={parentId === null ? 'text-gray-800' : 'text-[#00927c]'}>{parentPathText}</span>
+                <span className={parentId === null ? 'text-gray-800' : 'text-[#7a6b2b]'}>{parentPathText}</span>
               </div>
             </Box>
 

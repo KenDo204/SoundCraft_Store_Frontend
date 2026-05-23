@@ -78,6 +78,18 @@ export const cancelOrder = createAsyncThunk(
   }
 );
 
+export const confirmReceipt = createAsyncThunk(
+  'order/confirmReceipt',
+  async (orderId: number, { rejectWithValue }) => {
+    try {
+      const response = await orderService.confirmReceipt(orderId);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Lỗi xác nhận nhận hàng');
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: 'order',
   initialState,
@@ -138,6 +150,15 @@ const orderSlice = createSlice({
       const index = state.myOrders.findIndex(o => o.id === action.payload);
       if (index !== -1) {
         state.myOrders[index].status = 'CANCELLED';
+      }
+    });
+
+    // confirmReceipt
+    builder.addCase(confirmReceipt.fulfilled, (state, action) => {
+      const updatedOrder = action.payload;
+      const index = state.myOrders.findIndex(o => o.id === updatedOrder.id);
+      if (index !== -1) {
+        state.myOrders[index] = updatedOrder;
       }
     });
   }

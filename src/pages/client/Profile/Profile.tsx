@@ -4,11 +4,12 @@ import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { fetchMyProfile } from '@/store/slices/user.slice';
 
 // --- Thay thế MUI Icons bằng Lucide Icons cho chuẩn phong cách Shadcn ---
-import { User, ShoppingBag, MapPin, LogOut } from 'lucide-react';
+import { User, ShoppingBag, MapPin, LogOut, MessageSquare } from 'lucide-react';
 
 // --- Import các Components con ---
-import { UserDetails } from './UserDetails'; // Component ta vừa tạo lúc nãy
+import { UserDetails } from './UserDetails'; 
 import { Orders } from '../Orders/Orders';
+import { MyReviews } from './MyReviews';
 // import { SavedCards } from './SavedCards';
 // import { Addresses } from './Addresses';
 
@@ -21,6 +22,7 @@ const menu = [
     { name: "Đơn hàng của tôi", path: "/account/orders", icon: <ShoppingBag size={20} /> },
     // { name: "Thẻ thanh toán", path: "/account/saved-card", icon: <CreditCard size={20} /> },
     { name: "Sổ địa chỉ", path: "/account/addresses", icon: <MapPin size={20} /> },
+    { name: "Đánh giá của tôi", path: "/account/reviews", icon: <MessageSquare size={20} /> },
     { name: "Đăng xuất", path: "/", icon: <LogOut size={20} /> }
 ];
 
@@ -133,6 +135,7 @@ const Profile = () => {
                                 <Route path='/orders' element={<Orders />} />
                                 {/* <Route path='/saved-card' element={<SavedCards />} /> */}
                                 <Route path='/addresses' element={<Addresses />} />
+                                <Route path='/reviews' element={<MyReviews />} />
                             </Routes>
                         </div>
                     </div>

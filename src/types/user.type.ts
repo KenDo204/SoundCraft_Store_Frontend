@@ -43,3 +43,68 @@ export interface ApiResponse<T> {
   message: string;
   data: T;
 }
+
+export interface AdminUserListQuery {
+  page?: number;
+  limit?: number;
+  search?: string;
+  isActive?: string;
+  minSpending?: number;
+  maxSpending?: number;
+}
+
+export interface AdminUserListItem {
+  user_userId: number;
+  user_fullName: string;
+  user_email: string;
+  user_mobile: string | null;
+  user_isActive: boolean;
+  user_role: UserRole;
+  user_createdAt: string;
+  totalSpending: string | number;
+}
+
+export interface AdminUserListResponse {
+  data: AdminUserListItem[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
+export interface AdminUserDetail {
+  user_id: number;
+  full_name: string;
+  email: string;
+  mobile: string | null;
+  avatar: string | null;
+  role: UserRole;
+  dob: string | null;
+  gender: Gender | null;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface CreateUserPayload {
+  full_name: string;
+  email: string;
+  password?: string;
+  mobile?: string;
+  role?: UserRole;
+  dob?: string;
+  gender?: Gender;
+}
+
+export interface UpdateUserPayload {
+  full_name?: string;
+  email?: string;
+  password?: string;
+  mobile?: string;
+  role?: UserRole;
+  is_active?: boolean | string | number;
+  dob?: string;
+  gender?: Gender;
+  file?: File | null;
+}

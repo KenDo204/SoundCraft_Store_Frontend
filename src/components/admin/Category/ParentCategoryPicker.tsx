@@ -239,7 +239,7 @@ const ParentCategoryPicker: React.FC<ParentCategoryPickerProps> = ({ open, onClo
 
       <DialogActions sx={{ p: 3, pt: 0, justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="body2" color="textSecondary">
-          Đang chọn: <span className="font-bold text-[#00927c]">{currentPathDisplay}</span>
+          Đang chọn: <span className="font-bold text-[#7a6b2b]">{currentPathDisplay}</span>
         </Typography>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Button 
@@ -262,7 +262,7 @@ const ParentCategoryPicker: React.FC<ParentCategoryPickerProps> = ({ open, onClo
             sx={{ 
               bgcolor: THEME_PRIMARY, textTransform: 'none',
               fontWeight: 'bold', fontSize: '14px',
-              px: 4, '&:hover': { bgcolor: '#007a68' },
+              px: 4, '&:hover': { bgcolor: '#7a6b2b' },
               '&:disabled': { bgcolor: '#e5e7eb', color: '#9ca3af' }
             }}
           >
