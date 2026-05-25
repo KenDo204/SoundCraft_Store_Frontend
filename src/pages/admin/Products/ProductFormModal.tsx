@@ -157,8 +157,6 @@ const ProductFormModal: React.FC<Props> = ({ open, setOpen, productData, refresh
     }
   };
 
-
-
   const onSubmit = async (data: ProductFormValues) => {
     try {
       const payload: any = { ...data };

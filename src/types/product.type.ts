@@ -9,10 +9,12 @@ export interface ApiResponse<T> {
 
 export interface PaginatedData<T> {
   items: T[];
-  totalElements: number;
-  totalPages: number;
-  currentPage: number;
-  limit?: number;
+  meta: {
+    totalElements: number;
+    totalPages: number;
+    currentPage: number;
+    limit?: number;
+  };
 }
 
 export const ProductStatus = {

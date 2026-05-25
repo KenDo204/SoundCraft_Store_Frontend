@@ -66,6 +66,44 @@ export const deleteProduct = createAsyncThunk<number, number | string>(
   }
 );
 
+
+// New thunks for additional endpoints
+export const fetchBestSellers = createAsyncThunk<PaginatedData<ProductResponse>, any>(
+  'products/fetchBestSellers',
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await productService.getBestSellers(params);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Lỗi khi lấy sản phẩm bán chạy');
+    }
+  }
+);
+
+export const fetchProductsByParentCategory = createAsyncThunk<PaginatedData<ProductResponse>, { parentId: number; query?: any }>(
+  'products/fetchByParentCategory',
+  async ({ parentId, query }, { rejectWithValue }) => {
+    try {
+      const response = await productService.getProductsByParentCategory(parentId, query);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Lỗi khi lấy sản phẩm theo danh mục');
+    }
+  }
+);
+
+export const fetchDiscountedProducts = createAsyncThunk<PaginatedData<ProductResponse>, any>(
+  'products/fetchDiscounted',
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await productService.getDiscountedProducts(params);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Lỗi khi lấy sản phẩm giảm giá');
+    }
+  }
+);
+
 export const fetchNewArrivals = createAsyncThunk<PaginatedData<ProductResponse>, any>(
   'products/fetchNewArrivals',
   async (params, { rejectWithValue }) => {
@@ -84,36 +122,45 @@ export const fetchNewArrivals = createAsyncThunk<PaginatedData<ProductResponse>,
 
 interface ProductState {
   list: ProductResponse[];
-  pagination: Omit<PaginatedData<ProductResponse>, 'items'>; // Bỏ items, giữ lại info phân trang
+  pagination: Omit<PaginatedData<ProductResponse>, 'items'>;
   currentProduct: ProductResponse | null;
   isLoading: boolean;
-  isActionLoading: boolean; // Dùng riêng cho lúc bấm nút Thêm/Sửa/Xóa
+  isActionLoading: boolean;
   error: string | null;
+
+  // ---- Dedicated lists for Home sections ----
   newArrivals: ProductResponse[];
-  arrivalPagination: Omit<PaginatedData<ProductResponse>, 'items'>;
   isArrivalsLoading: boolean;
+
+  bestSellers: ProductResponse[];
+  isBestSellersLoading: boolean;
+
+  discountedProducts: ProductResponse[];
+  isDiscountedLoading: boolean;
+
+  productsByCategory: ProductResponse[];
+  isByCategoryLoading: boolean;
 }
 
 const initialState: ProductState = {
   list: [],
-  pagination: {
-    totalElements: 0,
-    totalPages: 1,
-    currentPage: 1,
-    limit: 10,
-  },
+  pagination: { meta: { totalElements: 0, totalPages: 1, currentPage: 1, limit: 10 } },
   currentProduct: null,
   isLoading: false,
   isActionLoading: false,
   error: null,
+
   newArrivals: [],
-  arrivalPagination: {
-    totalElements: 0,
-    totalPages: 1,
-    currentPage: 1,
-    limit: 12,
-  },
   isArrivalsLoading: false,
+
+  bestSellers: [],
+  isBestSellersLoading: false,
+
+  discountedProducts: [],
+  isDiscountedLoading: false,
+
+  productsByCategory: [],
+  isByCategoryLoading: false,
 };
 
 const productSlice = createSlice({
@@ -130,11 +177,11 @@ const productSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.list = action.payload.items;
-        state.pagination = {
-          totalElements: action.payload.totalElements,
-          totalPages: action.payload.totalPages,
-          currentPage: action.payload.currentPage,
-          limit: action.payload.limit,
+        state.pagination.meta = {
+          totalElements: action.payload.meta.totalElements,
+          totalPages: action.payload.meta.totalPages,
+          currentPage: action.payload.meta.currentPage,
+          limit: action.payload.meta.limit,
         };
       })
       .addCase(fetchProducts.rejected, (state, action: any) => {
@@ -192,27 +239,47 @@ const productSlice = createSlice({
       })
 
       // NEW ARRIVALS
-      .addCase(fetchNewArrivals.pending, (state) => { 
-        state.isArrivalsLoading = true; 
-        state.isLoading = true; // Bật loading chung để trang Products hiện spinner
-      })
+      .addCase(fetchNewArrivals.pending, (state) => { state.isArrivalsLoading = true; })
       .addCase(fetchNewArrivals.fulfilled, (state, action) => {
         state.isArrivalsLoading = false;
-        state.isLoading = false;
         state.newArrivals = action.payload.items;
-        state.list = action.payload.items; // Cập nhật cả list chung để trang Products hiển thị được
-        state.arrivalPagination = {
-          totalElements: action.payload.totalElements,
-          totalPages: action.payload.totalPages,
-          currentPage: action.payload.currentPage,
-          limit: action.payload.limit,
-        };
-        state.pagination = state.arrivalPagination; // Đồng bộ pagination chung
       })
       .addCase(fetchNewArrivals.rejected, (state, action: any) => {
         state.isArrivalsLoading = false;
-        state.isLoading = false;
-        state.error = action.payload; 
+        state.error = action.payload;
+      })
+
+      // BEST SELLERS
+      .addCase(fetchBestSellers.pending, (state) => { state.isBestSellersLoading = true; })
+      .addCase(fetchBestSellers.fulfilled, (state, action) => {
+        state.isBestSellersLoading = false;
+        state.bestSellers = action.payload.items;
+      })
+      .addCase(fetchBestSellers.rejected, (state, action: any) => {
+        state.isBestSellersLoading = false;
+        state.error = action.payload;
+      })
+
+      // PRODUCTS BY PARENT CATEGORY
+      .addCase(fetchProductsByParentCategory.pending, (state) => { state.isByCategoryLoading = true; })
+      .addCase(fetchProductsByParentCategory.fulfilled, (state, action) => {
+        state.isByCategoryLoading = false;
+        state.productsByCategory = action.payload.items;
+      })
+      .addCase(fetchProductsByParentCategory.rejected, (state, action: any) => {
+        state.isByCategoryLoading = false;
+        state.error = action.payload;
+      })
+
+      // DISCOUNTED PRODUCTS
+      .addCase(fetchDiscountedProducts.pending, (state) => { state.isDiscountedLoading = true; })
+      .addCase(fetchDiscountedProducts.fulfilled, (state, action) => {
+        state.isDiscountedLoading = false;
+        state.discountedProducts = action.payload.items;
+      })
+      .addCase(fetchDiscountedProducts.rejected, (state, action: any) => {
+        state.isDiscountedLoading = false;
+        state.error = action.payload;
       });
   },
 });

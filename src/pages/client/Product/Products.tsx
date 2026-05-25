@@ -210,7 +210,7 @@ export const Products = () => {
               <>
                 <div className="flex justify-between items-center mb-6 px-2">
                    <p className="text-sm font-bold text-stone-400 uppercase tracking-widest">
-                     Hiển thị {products.length} / {pagination.totalElements} sản phẩm
+                     Hiển thị {products.length} / {pagination.meta.totalElements} sản phẩm
                    </p>
                 </div>
 
@@ -220,10 +220,10 @@ export const Products = () => {
                   ))}
                 </div>
 
-                {pagination.totalPages > 1 && (
+                {pagination.meta.totalPages > 1 && (
                   <div className="mt-12 flex justify-center bg-white p-4 rounded-2xl shadow-sm border border-stone-200 w-fit mx-auto">
                     <Pagination
-                      count={pagination.totalPages}
+                      count={pagination.meta.totalPages}
                       page={page}
                       onChange={(_, value) => setPage(value)}
                       sx={{

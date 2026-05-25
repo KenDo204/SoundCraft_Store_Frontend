@@ -151,6 +151,11 @@ const sortedCategoryTree = useMemo(() => {
               </span>
             </div>
           </td>
+          <td className="px-6 py-4 text-center w-32">
+            {category.level === 1 && (
+              <img src={category.image_url} alt={category.name} className="w-12 h-12 object-cover rounded mx-auto" />
+            )}
+          </td>
 
           <td className="px-6 py-4 text-center w-32">
             <span className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium border
@@ -204,7 +209,7 @@ const sortedCategoryTree = useMemo(() => {
 
         {hasChildren && (
           <tr>
-            <td colSpan={5} className="p-0 border-0">
+            <td colSpan={6} className="p-0 border-0">
               <Collapse in={isExpanded} timeout="auto" unmountOnExit>
                 <table className="w-full text-left border-collapse">
                   <tbody className="divide-y divide-gray-100 text-sm text-gray-700">
@@ -280,6 +285,7 @@ const sortedCategoryTree = useMemo(() => {
                 <tr className="bg-gray-50 border-b border-gray-100 text-gray-600 text-sm uppercase tracking-wider">
                   <th className="px-6 py-4 font-semibold w-24 text-center">STT</th>
                   <th className="px-6 py-4 font-semibold">Tên Danh Mục</th>
+                  <th className="px-6 py-4 font-semibold text-center">Hình Ảnh</th>
                   <th className="px-6 py-4 font-semibold w-32 text-center">Cấp Độ</th>
                   <th className="px-6 py-4 font-semibold w-40 text-center">Hoạt Động</th>
                   <th className="px-6 py-4 font-semibold w-32 text-center">Thao Tác</th>

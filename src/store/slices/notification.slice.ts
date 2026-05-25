@@ -62,10 +62,12 @@ const initialState: NotificationState = {
   unreadCount: 0,
   list: [],
   pagination: {
-    totalElements: 0,
-    totalPages: 1,
-    currentPage: 0,
-    limit: 10,
+    meta: {
+      totalElements: 0,
+      totalPages: 1,
+      currentPage: 0,
+      limit: 10,
+    }
   },
   isLoading: false,
   error: null,
@@ -86,11 +88,11 @@ const notificationSlice = createSlice({
       .addCase(fetchNotifications.fulfilled, (state, action) => {
         state.isLoading = false;
         state.list = action.payload.items;
-        state.pagination = {
-          totalElements: action.payload.totalElements,
-          totalPages: action.payload.totalPages,
-          currentPage: action.payload.currentPage,
-          limit: action.payload.limit,
+        state.pagination.meta = {
+          totalElements: action.payload.meta.totalElements,
+          totalPages: action.payload.meta.totalPages,
+          currentPage: action.payload.meta.currentPage,
+          limit: action.payload.meta.limit,
         };
       })
       .addCase(fetchNotifications.rejected, (state, action: any) => {

@@ -42,4 +42,5 @@ export interface CategoryPayload {
   parent_id?: number | null;
   is_active?: boolean;
   file?: File | null;
+  image_url?: string;
 }

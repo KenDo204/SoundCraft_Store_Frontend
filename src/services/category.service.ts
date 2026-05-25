@@ -43,7 +43,7 @@ export const categoryService = {
   },
 
   update: (id: string | number, payload: any): Promise<ApiResponse<CategoryAdmin>> => {
-    const formData = createFormData(payload);
+    const formData = payload instanceof FormData ? payload : createFormData(payload);
     return api.put(`/categories/${id}`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });

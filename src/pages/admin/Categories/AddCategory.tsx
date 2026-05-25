@@ -3,7 +3,7 @@ import {
   TextField, Box, Switch, FormControlLabel, Button, CircularProgress
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { ArrowBack, KeyboardArrowRight, Save } from '@mui/icons-material';
+import { ArrowBack, KeyboardArrowRight, Save, CloudUpload } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchCategoryTree, createCategory } from '@/store/slices/category.slice';
 import { toast } from 'react-toastify';
@@ -22,6 +22,7 @@ const AddCategory = () => {
   const [name, setName] = useState('');
   const [parentId, setParentId] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [parentPathText, setParentPathText] = useState<string>('Không có (Làm danh mục gốc)');
   
@@ -39,6 +40,10 @@ const AddCategory = () => {
     setParentPathText(pathText);
   };
 
+  const handleThumbChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(e.target.files?.[0] ?? null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -54,11 +59,13 @@ const AddCategory = () => {
 
     setIsSubmitting(true);
     try {
-      await dispatch(createCategory({
-        name: name.trim(),
-        parent_id: parentId,
-        is_active: isActive,
-      })).unwrap();
+        await dispatch(createCategory({
+          name: name.trim(),
+          parent_id: parentId,
+          is_active: isActive,
+          // Include file if present; FormData will handle it
+          ...(file && { file })
+        })).unwrap();
 
       toast.success("Tạo danh mục thành công!");
       dispatch(fetchCategoryTree()); // Refresh tree
@@ -103,18 +110,53 @@ const AddCategory = () => {
               />
             </Box>
 
+            {/* Image upload only for root categories (no parent) */}
+            {parentId === null && (
+              <Box className="mt-4 relative">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Hình ảnh danh mục</label>
+                <div className="relative w-full h-24 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-[#00927c] transition-colors bg-gray-50 overflow-hidden">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleThumbChange}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  />
+                  {file ? (
+                    <span className="text-sm font-medium text-[#00927c] px-4 text-center truncate w-full">{file.name}</span>
+                  ) : (
+                    <div className="flex flex-col items-center gap-1">
+                      <CloudUpload className="text-gray-400" />
+                      <span className="text-sm text-gray-500">Nhấn để chọn ảnh</span>
+                    </div>
+                  )}
+                </div>
+              </Box>
+            )}
+
             <Box>
               <label className="block text-sm font-medium text-gray-700 mb-1 ml-1">Danh mục cha</label>
               <div
                 onClick={() => setIsPickerOpen(true)}
                 className="w-full flex items-center justify-between p-4 border border-gray-300 rounded-xl cursor-pointer hover:border-[#00927c] transition-colors bg-white"
               >
-                <span className={parentId === null ? 'text-gray-800 font-medium' : 'text-[#00927c] font-medium'}>
+                <span className={parentId === null ? 'text-gray-800 font-medium' : 'text-[#00927c'}>
                   {parentPathText}
                 </span>
                 <KeyboardArrowRight className="text-gray-400" />
               </div>
             </Box>
+
+            <div className="mt-4 relative">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Hình ảnh</label>
+              <div className="relative w-full h-24 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center cursor-pointer hover:border-[#00927c] transition-colors bg-gray-50 overflow-hidden">
+                <input type="file" accept="image/*" onChange={handleThumbChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                {file ? (
+                  <span className="text-sm font-medium text-[#00927c] px-4 truncate">{file.name}</span>
+                ) : (
+                  <span className="text-sm text-gray-500">Nhấn để chọn ảnh</span>
+                )}
+              </div>
+            </div>
 
             <Box className="ml-1">
               <FormControlLabel

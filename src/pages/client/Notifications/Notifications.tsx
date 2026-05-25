@@ -137,10 +137,10 @@ export const NotificationsPage = () => {
               })}
 
               {/* Pagination */}
-              {pagination.totalPages > 1 && (
+              {pagination.meta.totalPages > 1 && (
                 <div className="p-8 flex justify-center bg-[#fcfbf9]">
                   <Pagination
-                    count={pagination.totalPages}
+                    count={pagination.meta.totalPages}
                     page={page}
                     onChange={handlePageChange}
                     sx={{

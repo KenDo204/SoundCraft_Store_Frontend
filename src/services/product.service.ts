@@ -50,8 +50,24 @@ export const productService = {
     return api.get('/products', { params });
   },
 
+  // Lấy sản phẩm mới nhất
   getNewArrivals: async (params?: any): Promise<ApiResponse<PaginatedData<ProductResponse>>> => {
     return api.get('/products/arrivals', { params });
+  },
+
+  // Lấy danh sách sản phẩm bán chạy
+  getBestSellers: async (params?: any): Promise<ApiResponse<PaginatedData<ProductResponse>>> => {
+    return api.get('/products/best-sellers', { params });
+  },
+
+  // Lấy danh sách sản phẩm theo danh mục cha
+  getProductsByParentCategory: async (parentId: number, query?: any): Promise<ApiResponse<PaginatedData<ProductResponse>>> => {
+    return api.get(`/products/category/parent/${parentId}`, { params: query });
+  },
+
+  // Lấy danh sách sản phẩm giảm giá
+  getDiscountedProducts: async (params?: any): Promise<ApiResponse<PaginatedData<ProductResponse>>> => {
+    return api.get('/products/discounted', { params });
   },
 
   // Lấy chi tiết 1 sản phẩm

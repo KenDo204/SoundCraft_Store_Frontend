@@ -136,10 +136,10 @@ export const ProductList = () => {
         </div>
 
         {/* Phân trang */}
-        {pagination.totalPages > 1 && (
+        {pagination.meta.totalPages > 1 && (
           <div className="flex justify-end">
             <Pagination 
-              count={pagination.totalPages} 
+              count={pagination.meta.totalPages} 
               page={page} 
               onChange={(_, value) => setPage(value)} 
               sx={{ '& .Mui-selected': { bgcolor: '#ea580c !important', color: 'white' } }} 
