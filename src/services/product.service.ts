@@ -70,9 +70,9 @@ export const productService = {
     return api.get('/products/discounted', { params });
   },
 
-  // Lấy chi tiết 1 sản phẩm
-  getProductById: async (id: number | string): Promise<ApiResponse<ProductResponse>> => {
-    return api.get(`/products/${id}`);
+  // Lấy chi tiết 1 sản phẩm theo ID hoặc Slug
+  getProductByIdOrSlug: async (idOrSlug: number | string): Promise<ApiResponse<ProductResponse>> => {
+    return api.get(`/products/${idOrSlug}`);
   },
 
   // Tạo mới (Gửi FormData)

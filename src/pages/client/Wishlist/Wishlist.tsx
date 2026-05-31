@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchMyWishlist } from '@/store/slices/wishlist.slice';
-import { ProductCard } from '../Product/components/ProductCard';
+import ProductCard from '@/components/home/ProductCard';
 import { Heart, Loader2, PackageX } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

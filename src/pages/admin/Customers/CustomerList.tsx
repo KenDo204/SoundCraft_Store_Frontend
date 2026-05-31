@@ -367,7 +367,6 @@ export const CustomerList: React.FC = () => {
                   <th className="px-6 py-5">Tài khoản</th>
                   <th className="px-6 py-5">Email & SĐT</th>
                   <th className="px-6 py-5 w-36">Vai trò</th>
-                  <th className="px-6 py-5 w-40 text-center">Tổng chi tiêu</th>
                   <th className="px-6 py-5 w-32 text-center">Trạng thái</th>
                   <th className="px-6 py-5 w-32 text-center">Thao tác</th>
                 </tr>
@@ -394,14 +393,14 @@ export const CustomerList: React.FC = () => {
                 ) : (
                   filteredUsers.map((userItem, index) => {
                     const hasManagePermission = canManageUser(userItem.user_role);
-                    const formattedDate = new Date(userItem.user_createdAt).toLocaleDateString('vi-VN', {
+                    const formattedDate = new Date(userItem.user_created_at).toLocaleDateString('vi-VN', {
                       year: 'numeric',
                       month: '2-digit',
                       day: '2-digit'
                     });
 
                     return (
-                      <tr key={userItem.user_userId || `${page}-${index}`} className="hover:bg-stone-50/50 transition-colors group">
+                      <tr key={userItem.user_user_id || `${page}-${index}`} className="hover:bg-stone-50/50 transition-colors group">
                         {/* STT */}
                         <td className="px-6 py-4 font-semibold text-stone-400 text-center">
                           {((page - 1) * limit + index + 1).toString().padStart(2, '0')}
@@ -411,11 +410,11 @@ export const CustomerList: React.FC = () => {
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-stone-100 border border-stone-200 flex items-center justify-center font-bold text-stone-500 overflow-hidden shrink-0">
-                              {userItem.user_fullName ? userItem.user_fullName.charAt(0).toUpperCase() : ''}
+                              {userItem.user_full_name ? userItem.user_full_name.charAt(0).toUpperCase() : ''}
                             </div>
                             <div className="flex flex-col">
                               <span className="font-bold text-stone-900 text-[14px]">
-                                {userItem.user_fullName}
+                                {userItem.user_full_name}
                               </span>
                               <span className="text-[11px] text-stone-400 mt-0.5">
                                 Khởi tạo: {formattedDate}
@@ -439,19 +438,14 @@ export const CustomerList: React.FC = () => {
                           </span>
                         </td>
 
-                        {/* Total Spending */}
-                        <td className="px-6 py-4 text-center font-semibold text-stone-800">
-                          {formatCurrency(userItem.totalSpending)}
-                        </td>
-
                         {/* Status Switch */}
                         <td className="px-6 py-4 text-center">
                           <div className="flex items-center justify-center gap-1.5">
-                            <Tooltip title={userItem.user_isActive ? 'Đang hoạt động' : 'Bị khóa'}>
+                            <Tooltip title={userItem.user_is_active ? 'Đang hoạt động' : 'Bị khóa'}>
                               <Switch 
-                                checked={userItem.user_isActive}
+                                checked={userItem.user_is_active}
                                 disabled={!hasManagePermission}
-                                onChange={() => handleToggleStatus(userItem.user_userId, userItem.user_isActive, userItem.user_role)}
+                                onChange={() => handleToggleStatus(userItem.user_user_id, userItem.user_is_active, userItem.user_role)}
                                 size="small"
                                 sx={{
                                   '& .MuiSwitch-switchBase.Mui-checked': { color: TEAL_COLOR },
@@ -459,7 +453,7 @@ export const CustomerList: React.FC = () => {
                                 }}
                               />
                             </Tooltip>
-                            {userItem.user_isActive ? (
+                            {userItem.user_is_active ? (
                               <UserCheck size={14} className="text-teal-600 hidden sm:inline" />
                             ) : (
                               <UserX size={14} className="text-red-500 hidden sm:inline" />
@@ -475,7 +469,7 @@ export const CustomerList: React.FC = () => {
                                 <IconButton 
                                   size="small" 
                                   disabled={!hasManagePermission}
-                                  onClick={() => navigate(`/admin/customers/edit/${userItem.user_userId}`)}
+                                  onClick={() => navigate(`/admin/customers/edit/${userItem.user_user_id}`)}
                                   sx={{ 
                                     color: '#64748b', 
                                     bgcolor: '#f8fafc', 
@@ -492,7 +486,7 @@ export const CustomerList: React.FC = () => {
                                 <IconButton 
                                   size="small" 
                                   disabled={!hasManagePermission}
-                                  onClick={() => handleDeleteClick(userItem.user_userId, userItem.user_fullName, userItem.user_role)}
+                                  onClick={() => handleDeleteClick(userItem.user_user_id, userItem.user_full_name, userItem.user_role)}
                                   sx={{ 
                                     color: '#64748b', 
                                     bgcolor: '#f8fafc', 

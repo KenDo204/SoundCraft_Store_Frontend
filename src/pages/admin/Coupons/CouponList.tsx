@@ -75,7 +75,14 @@ export const CouponList = () => {
                 </tr>
               ) : (
                 allCoupons.map((coupon) => (
-                  <tr key={coupon.coupon_id} className="hover:bg-stone-50 transition-colors">
+                  <tr 
+                    key={coupon.coupon_id} 
+                    className={`transition-colors ${
+                      coupon.is_active 
+                        ? 'hover:bg-stone-50' 
+                        : 'bg-stone-50/50 opacity-50 grayscale'
+                    }`}
+                  >
                     <td className="p-4">
                       <span className="font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-md border border-orange-100 tracking-wider">
                         {coupon.code}
@@ -111,6 +118,7 @@ export const CouponList = () => {
                         <Switch 
                            checked={coupon.is_active} 
                            onChange={() => handleToggle(coupon.coupon_id)} 
+                           disabled={!coupon.is_active}
                            color="warning" 
                         />
                       </Tooltip>

@@ -200,9 +200,9 @@ const customerSlice = createSlice({
       .addCase(updateAdminUserStatus.fulfilled, (state, action) => {
         state.isLoading = false;
         const targetId = action.payload;
-        const target = state.list.find((u) => u.user_userId === targetId);
+        const target = state.list.find((u) => u.user_user_id === targetId);
         if (target) {
-          target.user_isActive = !target.user_isActive;
+          target.user_is_active = !target.user_is_active;
         }
       })
       .addCase(updateAdminUserStatus.rejected, (state, action: any) => {
@@ -217,7 +217,7 @@ const customerSlice = createSlice({
       })
       .addCase(deleteAdminUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.list = state.list.filter((u) => u.user_userId !== action.payload);
+        state.list = state.list.filter((u) => u.user_user_id !== action.payload);
       })
       .addCase(deleteAdminUser.rejected, (state, action: any) => {
         state.isLoading = false;

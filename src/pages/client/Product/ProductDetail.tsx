@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { fetchProductById, fetchProducts } from '@/store/slices/product.slice'; // fetchProducts dùng để gọi SP tương tự
-import { ProductCard } from './components/ProductCard';
+import { fetchProductByIdOrSlug, fetchProducts } from '@/store/slices/product.slice'; // fetchProducts dùng để gọi SP tương tự
+import ProductCard from '@/components/home/ProductCard';
 import { ProductReviews } from './components/ProductReviews';
 import { ShoppingCart, Star, ShieldCheck, Truck, Heart, Loader2 } from 'lucide-react';
 import { fetchReviewStatistics } from '@/store/slices/review.slice';
@@ -14,7 +14,7 @@ import { formatPrice } from '@/lib/utils';
 import { trackingService, UserActionType } from '@/services/tracking.service';
 
 export const ProductDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { currentProduct: product, isLoading } = useAppSelector(state => state.products);
@@ -30,12 +30,18 @@ export const ProductDetail = () => {
 
   // 1. Load Data
   useEffect(() => {
-    if (id) {
-      dispatch(fetchProductById(id));
-      dispatch(fetchReviewStatistics(Number(id)));
+    if (slug) {
+      dispatch(fetchProductByIdOrSlug(slug));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [id, dispatch]);
+  }, [slug, dispatch]);
+
+  // 1.1 Load Review Statistics when product is loaded
+  useEffect(() => {
+    if (product?.productId) {
+      dispatch(fetchReviewStatistics(product.productId));
+    }
+  }, [product?.productId, dispatch]);
 
   // 2. Set Default UI & Lịch sử Đã xem khi có data
   useEffect(() => {
@@ -191,13 +197,20 @@ export const ProductDetail = () => {
 
           {/* CỘT PHẢI: THÔNG TIN & MUA HÀNG */}
           <div className="w-full lg:w-1/2 flex flex-col">
-            <span className="text-sm font-black text-orange-600 tracking-widest uppercase mb-2">{product.brand?.name}</span>
+            {product.brand && (
+              <Link
+                to={`/collection/${product.brand.slug}`}
+                className="text-sm font-black text-orange-600 hover:text-orange-800 tracking-widest uppercase mb-2 w-fit transition-colors"
+              >
+                {product.brand.name}
+              </Link>
+            )}
             <h1 className="text-3xl lg:text-4xl font-black text-stone-900 leading-tight mb-4">{product.productName}</h1>
 
             <div className="flex items-center gap-4 mb-6 pb-6 border-b border-stone-100">
               <div className="flex items-center gap-1 text-orange-600 font-black">
                 <Star size={18} fill="currentColor" />
-                <span>{statistics?.averageRating?.toFixed(1) || '0.0'}</span>
+                <span>{Number(statistics?.averageRating || 0).toFixed(1)}</span>
               </div>
               <span className="text-stone-300">|</span>
               <span className="text-stone-500 text-sm font-medium">{statistics?.totalReviews || 0} Đánh giá</span>
@@ -223,8 +236,6 @@ export const ProductDetail = () => {
               
               {product.status === 'INACTIVE' && <span className="mb-1 bg-red-100 text-red-600 px-3 py-1.5 rounded-xl text-sm font-bold">Ngừng kinh doanh</span>}
             </div>
-
-
 
             {/* MUA HÀNG */}
             <div className="flex items-center gap-4 mb-8">

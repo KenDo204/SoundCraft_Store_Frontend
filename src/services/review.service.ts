@@ -78,6 +78,6 @@ export const reviewService = {
 
   getStatistics: async (productId: number): Promise<ReviewStatistics> => {
     const response = await api.get(`/reviews/statistics/${productId}`);
-    return response.data;
+    return response as any;
   }
 };

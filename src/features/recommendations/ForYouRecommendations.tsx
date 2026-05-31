@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchForYouRecommendations } from '@/store/slices/recommendation.slice';
-import { ProductCard } from '@/pages/client/Product/components/ProductCard';
+import ProductCard from '@/components/home/ProductCard';
 import { Sparkles } from 'lucide-react';
 
 interface ForYouRecommendationsProps {

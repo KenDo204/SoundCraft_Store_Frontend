@@ -54,14 +54,13 @@ export interface AdminUserListQuery {
 }
 
 export interface AdminUserListItem {
-  user_userId: number;
-  user_fullName: string;
+  user_user_id: number;
+  user_full_name: string;
   user_email: string;
   user_mobile: string | null;
-  user_isActive: boolean;
+  user_is_active: boolean;
   user_role: UserRole;
-  user_createdAt: string;
-  totalSpending: string | number;
+  user_created_at: string;
 }
 
 export interface AdminUserListResponse {

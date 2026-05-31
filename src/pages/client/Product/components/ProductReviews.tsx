@@ -43,8 +43,8 @@ export const ProductReviews = ({ productId }: ProductReviewsProps) => {
       <div className="bg-stone-50 rounded-[32px] p-8 flex flex-col md:flex-row gap-10 border border-stone-100">
         <div className="flex flex-col items-center justify-center text-center space-y-2 md:border-r border-stone-200 md:pr-10">
           <h3 className="text-sm font-black text-stone-400 uppercase tracking-widest">Đánh giá trung bình</h3>
-          <div className="text-6xl font-black text-stone-900">{statistics?.averageRating?.toFixed(1) || '0.0'}</div>
-          <Rating value={statistics?.averageRating || 0} precision={0.1} readOnly sx={{ color: '#ea580c' }} />
+          <div className="text-6xl font-black text-stone-900">{Number(statistics?.averageRating || 0).toFixed(1)}</div>
+          <Rating value={Number(statistics?.averageRating || 0)} precision={0.1} readOnly sx={{ color: '#ea580c' }} />
           <p className="text-sm text-stone-500 font-medium">({statistics?.totalReviews || 0} nhận xét)</p>
         </div>
 

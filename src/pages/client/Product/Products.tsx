@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchProducts, fetchNewArrivals } from '@/store/slices/product.slice';
 import { fetchAllBrands } from '@/store/slices/brand.slice';
 
-import { ProductCard } from './components/ProductCard';
+import ProductCard from '@/components/home/ProductCard';
 import { Search, Loader2 } from 'lucide-react';
 import { Pagination } from '@mui/material';
 import { FilterSection, type FilterState } from './components/FilterSection';

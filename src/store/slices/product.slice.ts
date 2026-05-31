@@ -18,11 +18,11 @@ export const fetchProducts = createAsyncThunk<PaginatedData<ProductResponse>, Pr
   }
 );
 
-export const fetchProductById = createAsyncThunk<ProductResponse, number | string>(
-  'products/fetchById',
-  async (id, { rejectWithValue }) => {
+export const fetchProductByIdOrSlug = createAsyncThunk<ProductResponse, number | string>(
+  'products/fetchByIdOrSlug',
+  async (idOrSlug, { rejectWithValue }) => {
     try {
-      const response = await productService.getProductById(id);
+      const response = await productService.getProductByIdOrSlug(idOrSlug);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Lỗi khi lấy chi tiết sản phẩm');
@@ -189,13 +189,13 @@ const productSlice = createSlice({
         state.error = action.payload;
       })
 
-      // FETCH BY ID
-      .addCase(fetchProductById.pending, (state) => { state.isLoading = true; })
-      .addCase(fetchProductById.fulfilled, (state, action) => {
+      // FETCH BY ID OR SLUG
+      .addCase(fetchProductByIdOrSlug.pending, (state) => { state.isLoading = true; })
+      .addCase(fetchProductByIdOrSlug.fulfilled, (state, action) => {
         state.isLoading = false;
         state.currentProduct = action.payload;
       })
-      .addCase(fetchProductById.rejected, (state, action: any) => {
+      .addCase(fetchProductByIdOrSlug.rejected, (state, action: any) => {
         state.isLoading = false;
         state.error = action.payload;
       })

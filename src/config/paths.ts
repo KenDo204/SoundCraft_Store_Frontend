@@ -4,7 +4,7 @@ export const PATHS = {
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
   PRODUCTS: '/products',
-  PRODUCT_DETAIL: '/products/:id',
+  PRODUCT_DETAIL: '/products/:slug',
   CART: '/cart',
   CHECKOUT: '/checkout',
   PAYMENT_RESULT: '/payments/vnpay/return',
