@@ -42,9 +42,9 @@ const Header: React.FC = () => {
 
   return (
     <header className="w-full flex flex-col font-sans sticky top-0 z-50">
-      <div className={`transition-all duration-300 overflow-hidden ${isScrolled ? 'h-0 opacity-0' : 'h-8'}`}>
+      {/* <div className={`transition-all duration-300 overflow-hidden ${isScrolled ? 'h-0 opacity-0' : 'h-8'}`}>
         <TopBar />
-      </div>
+      </div> */}
 
       <div className={`bg-[#fcfbf9] backdrop-blur-sm border-b border-stone-200 shadow-sm transition-all 
       duration-500 ease-in-out

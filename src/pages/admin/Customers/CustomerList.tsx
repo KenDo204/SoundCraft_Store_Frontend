@@ -201,10 +201,10 @@ export const CustomerList: React.FC = () => {
     setPage(1);
   };
 
-  const formatCurrency = (value: string | number) => {
-    const num = Number(value) || 0;
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num);
-  };
+  // const formatCurrency = (value: string | number) => {
+  //   const num = Number(value) || 0;
+  //   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num);
+  // };
 
   return (
     <div className="p-4 lg:p-8 bg-[#fcfbf9] min-h-screen font-sans">
